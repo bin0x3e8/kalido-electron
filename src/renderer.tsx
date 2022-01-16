@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import './styles.css';
-import MainPage from './components/pages/mainPage/mainPage';
+import MainPage from './components/pages/mainPage/MainPage';
 
 const App = (): JSX.Element => {
   return (
