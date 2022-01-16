@@ -1,9 +1,9 @@
-import React, { FC, useState, useEffect } from 'react';
-import { useLoader } from 'react-three-fiber';
+import React, { FC, useState, useEffect,useRef } from 'react';
+import { useLoader } from '@react-three/fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { VRM, VRMUtils,VRMSchema } from '@pixiv/three-vrm';
 import { Scene, Group } from 'three';
-// import * as Kalidokit from 'kalidokit';
+
 
 type Props = {
   url: string;
@@ -14,10 +14,10 @@ const VRMAsset:FC<Props> = ({url}:Props) => {
   const [scene, setScene] = useState<Scene | Group | null>(null);
   const gltf = useLoader(GLTFLoader, url);
 
-  useEffect( () => {
-    
-  },[]);
 
+  // const video = new HTMLVideoElement();
+
+  
   useEffect(() => {
     VRMUtils.removeUnnecessaryJoints(gltf.scene);
     VRM.from(gltf).then(vrm => {
@@ -32,7 +32,11 @@ const VRMAsset:FC<Props> = ({url}:Props) => {
     return null;
   }
 
-  return <primitive object={scene} dispose={null} />
+  return (
+    <>
+      <primitive object={scene} dispose={null} />
+    </>
+  )
 }
 
 export default VRMAsset;
