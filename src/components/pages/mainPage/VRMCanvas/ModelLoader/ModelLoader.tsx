@@ -7,7 +7,7 @@ type Props = {
 const ModelLoader:FC<Props> = ({data}:Props)=> {
   return (
     <Suspense fallback={null}>
-      <VRMAsset url='../public/models/three-vrm-girl.vrm' data={data}/>
+      <VRMAsset url='../public/models/model.vrm' data={data}/>
     </Suspense>
   )
 }

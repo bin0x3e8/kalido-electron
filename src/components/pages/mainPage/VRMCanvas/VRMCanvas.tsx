@@ -16,9 +16,17 @@ let holistic = new Holistic({locateFile: (file) => {
   return `https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.4.1633559476/${file}`;
 }});
 
+type RegData = {
+    faceRig: Kalidokit.TFace | null;
+    poseRig: Kalidokit.TPose | null;
+    rightHandRig: Kalidokit.THand<"Left" | "Right"> | null;
+    leftHandRig: Kalidokit.THand<"Left" | "Right"> | null;
+
+}
+
 
 const VRMCanvas:FC = () => {
-  const [rigdata,setRigdata] = useState<Kalidokit.TFace|null>(null);
+  const [rigdata,setRigdata] = useState<RegData|null>(null);
   // const holistic = new Holistic();
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoSize = {
@@ -30,8 +38,19 @@ const VRMCanvas:FC = () => {
     useEffect(() => {
       holistic.onResults(results => {
         let facelm = results.faceLandmarks;
+        let poselm = results.poseLandmarks;
+        let rightHandlm = results.rightHandLandmarks;
+        let leftHandlm = results.leftHandLandmarks;
+        let poselm3d = results.ea; // エラーとなるが問題ない
+
         const faceRig = Kalidokit.Face.solve(facelm,{runtime:'mediapipe',video:videoRef.current})||null;
-        setRigdata(faceRig);
+        const poseRig = Kalidokit.Pose.solve(poselm3d,poselm,{runtime:'mediapipe',video:videoRef.current})||null;
+        let rightHandRig = Kalidokit.Hand.solve(rightHandlm,"Right")||null;
+        let leftHandRig = Kalidokit.Hand.solve(leftHandlm,"Left")||null;
+        const regData = {
+          faceRig,poseRig,rightHandRig,leftHandRig
+        }
+        setRigdata(regData);
       })  
       startCamera();
       
