@@ -18,7 +18,7 @@ let holistic = new Holistic({locateFile: (file) => {
 
 
 const VRMCanvas:FC = () => {
-
+  const [rigdata,setRigdata] = useState<Kalidokit.TFace|null>(null);
   // const holistic = new Holistic();
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoSize = {
@@ -30,9 +30,8 @@ const VRMCanvas:FC = () => {
     useEffect(() => {
       holistic.onResults(results => {
         let facelm = results.faceLandmarks;
-        let faceRig = Kalidokit.Face.solve(facelm,{runtime:'mediapipe',video:videoRef.current});
-        console.log(faceRig);
-        console.log('faceRig');
+        const faceRig = Kalidokit.Face.solve(facelm,{runtime:'mediapipe',video:videoRef.current})||null;
+        setRigdata(faceRig);
       })  
       startCamera();
       
@@ -63,7 +62,7 @@ const VRMCanvas:FC = () => {
         height={videoSize.height}
       />
     <Canvas>
-      <ModelLoader />
+      <ModelLoader data={rigdata}/>
       <Controles defaultCameraPosition={[0, 1.25, 1]} target={new Vector3(0, 1, 0)}/>
       <directionalLight position={[1, 1, 1]} />
       <gridHelper />

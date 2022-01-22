@@ -1,10 +1,13 @@
-import React, { FC,Suspense } from 'react'
+import React, { FC,PropsWithChildren,Suspense } from 'react'
 import VRMAsset from '../VRMAsset/VRMAsset'
 
-const ModelLoader:FC = ()=> {
+type Props = {
+  data: any;
+}
+const ModelLoader:FC<Props> = ({data}:Props)=> {
   return (
     <Suspense fallback={null}>
-      <VRMAsset url='../public/models/three-vrm-girl.vrm' />
+      <VRMAsset url='../public/models/three-vrm-girl.vrm' data={data}/>
     </Suspense>
   )
 }
